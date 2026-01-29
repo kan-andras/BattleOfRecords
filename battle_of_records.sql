@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Jan 28. 14:12
--- Kiszolgáló verziója: 10.4.28-MariaDB
--- PHP verzió: 8.1.17
+-- Létrehozás ideje: 2026. Jan 29. 12:28
+-- Kiszolgáló verziója: 10.4.32-MariaDB
+-- PHP verzió: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,63 +24,95 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `battlefront2`
+-- Tábla szerkezet ehhez a táblához `játék`
 --
 
-CREATE TABLE `battlefront2` (
-  `Id` int(9) NOT NULL,
-  `nev` varchar(100) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL,
-  `eletero` int(100) NOT NULL,
-  `tamadas` int(3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `játék` (
+  `jatek_id` int(5) NOT NULL,
+  `jatek_neve` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `minecraft`
+-- Tábla szerkezet ehhez a táblához `karakterek`
 --
 
-CREATE TABLE `minecraft` (
-  `Id` int(9) NOT NULL,
-  `nev` varchar(100) CHARACTER SET utf8 COLLATE utf8_hungarian_ci NOT NULL,
+CREATE TABLE `karakterek` (
+  `karakter_id` int(100) NOT NULL,
+  `jatek_id` int(5) NOT NULL,
+  `neve` varchar(100) NOT NULL,
   `eletero` int(100) NOT NULL,
-  `tamadas` int(3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `mana` int(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `nioh2`
+-- Tábla szerkezet ehhez a táblához `kepesseg`
 --
 
-CREATE TABLE `nioh2` (
-  `Id` int(9) NOT NULL,
-  `nev` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
-  `eletero` int(100) NOT NULL,
-  `tamadas` int(3) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `kepesseg` (
+  `kepesseg_id` int(100) NOT NULL,
+  `karakter_id` int(100) NOT NULL,
+  `neve` varchar(100) NOT NULL,
+  `mana_fogyasztas` int(100) NOT NULL,
+  `ereje` int(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `meccs_karakter`
+--
+
+CREATE TABLE `meccs_karakter` (
+  `meccs_id` int(100) NOT NULL,
+  `karakter_id` int(100) NOT NULL,
+  `aktualis_elet` int(100) NOT NULL,
+  `aktualis_mana` int(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
 -- Indexek a kiírt táblákhoz
 --
 
 --
--- A tábla indexei `battlefront2`
+-- A tábla indexei `játék`
 --
-ALTER TABLE `battlefront2`
-  ADD PRIMARY KEY (`Id`);
+ALTER TABLE `játék`
+  ADD PRIMARY KEY (`jatek_id`);
 
 --
--- A tábla indexei `minecraft`
+-- A tábla indexei `karakterek`
 --
-ALTER TABLE `minecraft`
-  ADD PRIMARY KEY (`Id`);
+ALTER TABLE `karakterek`
+  ADD PRIMARY KEY (`karakter_id`),
+  ADD UNIQUE KEY `jatek_id` (`jatek_id`);
 
 --
--- A tábla indexei `nioh2`
+-- A tábla indexei `kepesseg`
 --
-ALTER TABLE `nioh2`
-  ADD PRIMARY KEY (`Id`);
+ALTER TABLE `kepesseg`
+  ADD PRIMARY KEY (`kepesseg_id`),
+  ADD UNIQUE KEY `karakter_id` (`karakter_id`);
+
+--
+-- A tábla indexei `meccs_karakter`
+--
+ALTER TABLE `meccs_karakter`
+  ADD PRIMARY KEY (`meccs_id`);
+
+--
+-- Megkötések a kiírt táblákhoz
+--
+
+--
+-- Megkötések a táblához `karakterek`
+--
+ALTER TABLE `karakterek`
+  ADD CONSTRAINT `karakterek_ibfk_1` FOREIGN KEY (`jatek_id`) REFERENCES `játék` (`jatek_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `karakterek_ibfk_2` FOREIGN KEY (`karakter_id`) REFERENCES `kepesseg` (`karakter_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
