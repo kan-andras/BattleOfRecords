@@ -15,7 +15,7 @@ namespace BattleOfRecords.Model
             this.kepessegekneve = kepessegekneve;
             this.tipusa = tipusa;
             this.manafogyasztas = manafogyasztas;
-            this.serules = serules;s
+            this.serules = serules;
         }
 
         public int karakter_id {  get; set; }
