@@ -8,7 +8,7 @@ namespace BattleOfRecords.Model
 {
     internal class Karakterek
     {
-        public int _karakter_id
+        public int _karakter_id { get; set; }
         public int _jatek_id { get; set; }
         public string karakterneve { get; set; }
         public int eletero { get; set; }

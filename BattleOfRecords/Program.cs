@@ -1,8 +1,11 @@
-﻿using BattleOfRecords.Model;
+﻿using BattleOfRecords.DataBase;
+using BattleOfRecords.Model;
 using System.Data;
 
 internal class Program
 {
+    public static List<Kepessegek> kepessegek = new List<Kepessegek>();
+    public static List<Jatekok> jatekok = new List<Jatekok>();
     public static List<Karakterek> karakterek = new List<Karakterek>();
     public static FileIO.ReadFromFile beolvas = new FileIO.ReadFromFile();
     public static FileIO.WriteToFile beleiras = new FileIO.WriteToFile();
@@ -10,13 +13,13 @@ internal class Program
     public static DataTable adatok = new DataTable();
     private static void Main(string[] args)
     {
-        SelectFromTable("orszagok", connectionString);
+        SelectFromTable("jatek", connectionString);
         Adatokbetoltes(adatok);
     }
 
     private static void SelectFromTable(string v, string connectionString)
     {
-        adatok = DatabaseServices.GetData(tablename, connectionString);
+        adatok = DataBaseService.GetData(tablename, connectionString);
         Console.WriteLine(".");
     }
 
