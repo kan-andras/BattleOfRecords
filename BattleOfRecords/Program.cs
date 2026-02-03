@@ -55,8 +55,39 @@ internal class Program
             {
                 if (item._jatek_id == valasztottJatekId)
                 {
-                    Console.WriteLine(
-                        $"-Id: {item._jatek_id}| Név: {item.karakterneve} | HP: {item.eletero} | Mana: {item.mana}");
+                    Console.WriteLine($"- Karakter ID: {item._karakter_id}| Név: {item.karakterneve} | HP: {item.eletero} | Mana: {item.mana}");
+                }
+            }
+            Console.WriteLine("\nÍrja be az első játékos a kívánt karakter indexét a listából:");
+            int karakterIndex = Convert.ToInt32(Console.ReadLine());
+            var firstselectedKarakter = karakterek.Find(k => k._karakter_id == karakterIndex && k._jatek_id == valasztottJatekId);
+            if (firstselectedKarakter == null)
+            {
+                Console.WriteLine("Érvénytelen karakter választás!");
+                return;
+            }
+            Console.WriteLine($"\nElérhető képességek:");
+            foreach (var item in kepessegek)
+            {
+                if (item.karakter_id == firstselectedKarakter._karakter_id)
+                {
+                    Console.WriteLine($"- Képesség ID: {item.kepessegek_id}| Név: {item.kepessegekneve} | Típus: {item.tipusa} | Mana fogyasztás: {item.manafogyasztas} | Sebzés: {item.serules}");
+                }
+            }
+            Console.WriteLine("\nÍrja be a második játékos a kívánt karakter indexét a listából:");
+            int karakterrIndex = Convert.ToInt32(Console.ReadLine());
+            var secondselectedKarakter = karakterek.Find(k => k._karakter_id == karakterrIndex && k._jatek_id == valasztottJatekId);
+            if (secondselectedKarakter == null || secondselectedKarakter == firstselectedKarakter)
+            {
+                Console.WriteLine("Érvénytelen karakter választás!");
+                return;
+            }
+            Console.WriteLine($"\nElérhető képességek:");
+            foreach (var item in kepessegek)
+            {
+                if (item.karakter_id == secondselectedKarakter._karakter_id)
+                {
+                    Console.WriteLine($"- Képesség ID: {item.kepessegek_id}| Név: {item.kepessegekneve} | Típus: {item.tipusa} | Mana fogyasztás: {item.manafogyasztas} | Sebzés: {item.serules}");
                 }
             }
         }
