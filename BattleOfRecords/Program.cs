@@ -33,9 +33,6 @@ internal class Program
     private static void MeccsKeszites(List<Jatekok> jatekok, List<Karakterek> karakterek, List<Kepessegek> kepessegek)
     {
         Console.WriteLine("\nÍrd le, melyik játék karaktereivel szeretnél játszani:");
-        Console.WriteLine("1 - " + jatekok[0].jatekneve);
-        Console.WriteLine("2 - " + jatekok[1].jatekneve);
-        Console.WriteLine("3 - " + jatekok[2].jatekneve);
 
         try
         {
@@ -55,7 +52,7 @@ internal class Program
             {
                 if (item._jatek_id == valasztottJatekId)
                 {
-                    Console.WriteLine($"- Karakter ID: {item._karakter_id}| Név: {item.karakterneve} | HP: {item.eletero} | Mana: {item.mana}");
+                    Console.WriteLine(item);
                 }
             }
             Console.WriteLine("\nÍrja be az első játékos a kívánt karakter indexét a listából:");
@@ -71,7 +68,7 @@ internal class Program
             {
                 if (item.karakter_id == firstselectedKarakter._karakter_id)
                 {
-                    Console.WriteLine($"- Képesség ID: {item.kepessegek_id}| Név: {item.kepessegekneve} | Típus: {item.tipusa} | Mana fogyasztás: {item.manafogyasztas} | Sebzés: {item.serules}");
+                    Console.WriteLine(item);
                 }
             }
             Console.WriteLine("\nÍrja be a második játékos a kívánt karakter indexét a listából:");
@@ -87,8 +84,38 @@ internal class Program
             {
                 if (item.karakter_id == secondselectedKarakter._karakter_id)
                 {
-                    Console.WriteLine($"- Képesség ID: {item.kepessegek_id}| Név: {item.kepessegekneve} | Típus: {item.tipusa} | Mana fogyasztás: {item.manafogyasztas} | Sebzés: {item.serules}");
+                    Console.WriteLine(item);
                 }
+            }
+            Console.WriteLine($"\nA Harc elkezdődött!");
+            Console.WriteLine($"\n{firstselectedKarakter.karakterneve} vs {secondselectedKarakter.karakterneve}");
+            Console.WriteLine($"Sok szerencsét mindkét játékosnak!");
+            Console.WriteLine("Válasszátok ki az első képességet, amivel támadtok!");
+            Console.WriteLine("Az első játékos választ képességet (Válassz a karakterednek meghatározott képességet a képességek kőzül a képesség indexével.):");
+            try
+            {
+                int firstkepessegIndex = Convert.ToInt32(Console.ReadLine());
+                var firstselectedKepesseg = kepessegek.Find(k => k.kepessegek_id == firstkepessegIndex && k.karakter_id == firstselectedKarakter._karakter_id);
+                if (firstselectedKepesseg == null)
+                {
+                    Console.WriteLine("Érvénytelen képesség választás!");
+                    return;
+                }
+                Console.WriteLine($"Az első játékos a {firstselectedKepesseg.kepessegekneve} képességet választotta!");
+                Console.WriteLine("Most a második játékos következik:");
+                int secondkepessegIndex = Convert.ToInt32(Console.ReadLine());
+                var secondselectedKepesseg = kepessegek.Find(k => k.kepessegek_id == secondkepessegIndex && k.karakter_id == secondselectedKarakter._karakter_id);
+                if (secondselectedKepesseg == null || secondselectedKepesseg == firstselectedKepesseg)
+                {
+                    Console.WriteLine("Érvénytelen képesség választás!");
+                    return;
+                }
+                Console.WriteLine($"A második játékos a {secondselectedKepesseg.kepessegekneve} képességet választotta!");
+
+            }
+            catch
+            {
+                Console.WriteLine("Hiba a képesség választásnál!");
             }
         }
         catch
@@ -148,7 +175,7 @@ internal class Program
         Console.WriteLine("Játszható játékok nevei:");
         foreach (var item in jatekok)
         {
-            Console.WriteLine(item.jatekneve);
+            Console.WriteLine(item);
         }
     }
 

@@ -25,5 +25,9 @@ namespace BattleOfRecords.Model
         public int manafogyasztas { get; set; }
         public int serules {  get; set; }
 
+        public override string ToString()
+        {
+            return $"-Képesség ID: {kepessegek_id}| Képesség neve: {kepessegekneve}| Típusa: {tipusa}| Mana fogyasztás: {manafogyasztas}| Sebzés: {serules}";
+        }
     }
 }

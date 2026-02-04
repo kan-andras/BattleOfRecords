@@ -17,5 +17,10 @@ namespace BattleOfRecords.Model
         public int jatek_id { get; set; }
         public string jatekneve { get; set; }
 
+        public override string ToString()
+        {
+            return $"-ID: {jatek_id}| Játék neve: {jatekneve}";
+        }
+
     }
 }

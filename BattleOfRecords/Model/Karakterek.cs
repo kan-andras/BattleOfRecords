@@ -22,6 +22,11 @@ namespace BattleOfRecords.Model
             this._karakter_id = _karakter;
             this._jatek_id = _jatek;
         }
+
+        public override string ToString()
+        {
+            return $"-Karakter ID: {_karakter_id}| Karakter neve: {karakterneve}| Életereje: {eletero}| Mana: {mana}";
+        }
     }
 
 }
