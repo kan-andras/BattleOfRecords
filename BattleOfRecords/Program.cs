@@ -31,6 +31,7 @@ internal class Program
         KepessegekKiirasa(kepessegek);
 
         MeccsKeszites(jatekok, karakterek, kepessegek, ref kinyert, ref firstplayer, ref secondplayer);
+
     }
 
     private static void MeccsKeszites(List<Jatekok> jatekok, List<Karakterek> karakterek, List<Kepessegek> kepessegek, ref int kinyert, ref string player1, ref string player2)
@@ -114,6 +115,12 @@ internal class Program
                     return;
                 }
                 Console.WriteLine($"A második játékos a {secondselectedKepesseg.kepessegekneve} képességet választotta!");
+
+                Console.WriteLine($"\nAz első játékos támad!");
+                secondselectedKarakter.eletero -= firstselectedKepesseg.serules;
+                firstselectedKepesseg.manafogyasztas -= firstselectedKepesseg.manafogyasztas;
+                Console.WriteLine($"\nNeve: {secondselectedKarakter.karakterneve} életereje: {secondselectedKarakter.eletero}");
+                Console.WriteLine($"Az első játékos manája: {firstselectedKarakter.mana}");
 
             }
             catch
