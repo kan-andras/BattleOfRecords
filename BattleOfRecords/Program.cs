@@ -13,6 +13,9 @@ internal class Program
     public static DataTable adatok = new DataTable();
     public static DataTable karak = new DataTable();
     public static DataTable kepesseg = new DataTable();
+    public static int kinyert = 0;
+    private static string firstplayer = "";
+    private static string secondplayer = "";
     private static void Main(string[] args)
     {
         SelectFromTable("jatek", connectionString);
@@ -27,10 +30,10 @@ internal class Program
         KarakterekKiirasa(karakterek);
         KepessegekKiirasa(kepessegek);
 
-        MeccsKeszites(jatekok, karakterek, kepessegek);
+        MeccsKeszites(jatekok, karakterek, kepessegek, ref kinyert, ref firstplayer, ref secondplayer);
     }
 
-    private static void MeccsKeszites(List<Jatekok> jatekok, List<Karakterek> karakterek, List<Kepessegek> kepessegek)
+    private static void MeccsKeszites(List<Jatekok> jatekok, List<Karakterek> karakterek, List<Kepessegek> kepessegek, ref int kinyert, ref string player1, ref string player2)
     {
         Console.WriteLine("\nÍrd le, melyik játék karaktereivel szeretnél játszani:");
 
