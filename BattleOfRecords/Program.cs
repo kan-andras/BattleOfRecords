@@ -60,8 +60,8 @@ internal class Program
                 }
             }
             Console.WriteLine("\nÍrja be az első játékos a kívánt karakter indexét a listából:");
-            int karakterIndex = Convert.ToInt32(Console.ReadLine());
-            var firstselectedKarakter = karakterek.Find(k => k._karakter_id == karakterIndex && k._jatek_id == valasztottJatekId);
+            int karakterrrIndex = Convert.ToInt32(Console.ReadLine());
+            var firstselectedKarakter = karakterek.Find(k => k._karakter_id == karakterrrIndex && k._jatek_id == valasztottJatekId);
             if (firstselectedKarakter == null)
             {
                 Console.WriteLine("Érvénytelen karakter választás!");
@@ -108,7 +108,7 @@ internal class Program
             Console.WriteLine("Az első játékos választ képességet (Válassz a karakterednek meghatározott képességet a képességek kőzül a képesség indexével.):");
             try
             {
-                while (firstselectedKarakter.eletero > 0 && secondselectedKarakter.eletero > 0)
+                while (firstselectedKarakter.eletero > 0 || secondselectedKarakter.eletero > 0)
                 {
                     int kepessegIndex = Convert.ToInt32(Console.ReadLine());
                     var selectedKepesseg = kepessegek.Find(k => k.kepessegek_id == kepessegIndex && k.karakter_id == firstselectedKarakter._karakter_id);
@@ -130,11 +130,13 @@ internal class Program
                     {
                         firstselectedKarakter.mana += 5;
                         Console.WriteLine($"\n{firstselectedKarakter.karakterneve} visszakapott 5 manát a nagy sebzésért cserébe!");
+                        Console.WriteLine($"{firstselectedKarakter.karakterneve} nevű karakternek ennyi manája lett. ---> {firstselectedKarakter.mana}");
                     }
                     else if (selectedKepesseg.serules <= 10)
                     {
                         firstselectedKarakter.mana += 10;
                         Console.WriteLine($"\n{firstselectedKarakter.karakterneve} visszakapott 10 manát a kis sebzésért cserébe!");
+                        Console.WriteLine($"{firstselectedKarakter.karakterneve} nevű karakternek ennyi manája lett. ---> {firstselectedKarakter.mana}");
                     }
 
                     if (secondselectedKarakter.eletero <= 0)
@@ -144,7 +146,7 @@ internal class Program
                         break;
                     }
                     Console.WriteLine($"\n{secondselectedKarakter.karakterneve} maradék életereje: {secondselectedKarakter.eletero}");
-                    Console.WriteLine("\nMost a második játékos következik. Válassz egy képességet a karakterednek meghatározott képességek közül a képesség indexével:");
+                    Console.WriteLine("\nMost a második játékos következik:");
                     int kepessegsecondIndex = Convert.ToInt32(Console.ReadLine());
                     var secondselectedKepesseg = kepessegek.Find(k => k.kepessegek_id == kepessegsecondIndex && k.karakter_id == secondselectedKarakter._karakter_id);
                     if (selectedKepesseg == null || selectedKepesseg == secondselectedKepesseg)
@@ -166,11 +168,13 @@ internal class Program
                     {
                         secondselectedKarakter.mana += 5;
                         Console.WriteLine($"\n{secondselectedKarakter.karakterneve} visszakapott 5 manát a nagy sebzésért cserébe!");
+                        Console.WriteLine($"{secondselectedKarakter.karakterneve} nevű karakternek ennyi manája lett. ---> {secondselectedKarakter.mana}");
                     }
                     else if (secondselectedKepesseg.serules <= 10)
                     {
                         secondselectedKarakter.mana += 10;
                         Console.WriteLine($"\n{secondselectedKarakter.karakterneve} visszakapott 10 manát a kis sebzésért cserébe!");
+                        Console.WriteLine($"{secondselectedKarakter.karakterneve} nevű karakternek ennyi manája lett. ---> {secondselectedKarakter.mana}");
                     }
 
                     Console.WriteLine($"\nMost újra az első játékos következik:");

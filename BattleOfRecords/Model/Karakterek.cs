@@ -11,16 +11,7 @@ namespace BattleOfRecords.Model
         public int _karakter_id { get; set; }
         public int _jatek_id { get; set; }
         public string karakterneve { get; set; }
-        public int eletero
-        {
-            get => _karakter_id;
-            set
-            {
-                if (value < 0)
-                    throw new ArgumentOutOfRangeException(nameof(value), "a karakter id nem lehet negatív.");
-                _karakter_id = value;
-            }
-        }
+        public int eletero { get; set; }
         public int mana { get; set; }
 
         public Karakterek(int _karakter, int _jatek, int _mana, int _eletero, string _karakternev)
