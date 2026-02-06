@@ -13,17 +13,12 @@ namespace BattleOfRecords.Model
         public string karakterneve { get; set; }
         public int eletero
         {
-            get { return eletero; }
+            get => _karakter_id;
             set
             {
-                if (eletero > 0)
-                {
-                    eletero = 100;
-                }
-                else
-                {
-                    eletero = 1;
-                }
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException(nameof(value), "a karakter id nem lehet negatív.");
+                _karakter_id = value;
             }
         }
         public int mana { get; set; }
