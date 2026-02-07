@@ -25,7 +25,6 @@ internal class Program
         AdatokBetolteseTwo(karak);
         AdatokbetoltesThree(kepesseg);
 
-
         JatekokKiirasa(jatekok);
         KarakterekKiirasa(karakterek);
         KepessegekKiirasa(kepessegek);
@@ -37,21 +36,18 @@ internal class Program
     private static void MeccsKeszites(List<Jatekok> jatekok, List<Karakterek> karakterek, List<Kepessegek> kepessegek, ref int kinyert, ref string player1, ref string player2)
     {
         Console.WriteLine("\nÍrd le, melyik játék karaktereivel szeretnél játszani:");
-
+        List<int> firstselectedkarakterkepessegek = new List<int>();
+        List<int> secondselectedkarakterkepessegek = new List<int>();
         try
         {
             int valasztas = Convert.ToInt32(Console.ReadLine());
-
             if (valasztas < 1 || valasztas > 3)
             {
                 Console.WriteLine("Érvénytelen választás!");
                 return;
             }
-
             int valasztottJatekId = valasztas;
-
             Console.WriteLine("\nA kiválasztott játék karakterei:");
-
             foreach (var item in karakterek)
             {
                 if (item._jatek_id == valasztottJatekId)
@@ -107,61 +103,64 @@ internal class Program
             Console.WriteLine("Válasszátok ki az első képességet, amivel támadtok!");
             Console.WriteLine("Az első játékos választ képességet (Válassz a karakterednek meghatározott képességet a képességek kőzül a képesség indexével.):");
             try
-            {
+            { 
                 while (firstselectedKarakter.eletero > 0 || secondselectedKarakter.eletero > 0)
                 {
                     int kepessegIndex = Convert.ToInt32(Console.ReadLine());
-                    var selectedKepesseg = kepessegek.Find(k => k.kepessegek_id == kepessegIndex && k.karakter_id == firstselectedKarakter._karakter_id);
-                    if (selectedKepesseg == null)
+                    var firstselectedKepesseg = kepessegek.Find(k => k.kepessegek_id == kepessegIndex && k.karakter_id == firstselectedKarakter._karakter_id);
+                    int firstkepessegIndex = kepessegIndex;
+
+                    if (firstselectedKepesseg == null)
                     {
                         Console.WriteLine("Érvénytelen képesség választás!");
                         break;
                     }
-                    else if (selectedKepesseg.manafogyasztas > firstselectedKarakter.mana)
+                    else if (firstselectedKepesseg.manafogyasztas > firstselectedKarakter.mana)
                     {
                         Console.WriteLine("Nincs elég manád a képesség használatához!");
                         continue;
                     }
-                    firstselectedKarakter.mana -= selectedKepesseg.manafogyasztas;
-                    secondselectedKarakter.eletero -= selectedKepesseg.serules;
-                    Console.WriteLine($"\n{firstselectedKarakter.karakterneve} használta a {selectedKepesseg.kepessegekneve} képességet, ami {selectedKepesseg.serules} sebzést okozott {secondselectedKarakter.karakterneve}-nek.");
+                    firstselectedKarakter.mana -= firstselectedKepesseg.manafogyasztas;
+                    secondselectedKarakter.eletero -= firstselectedKepesseg.serules;
+                    Console.WriteLine($"\n{firstselectedKarakter.karakterneve} használta a {firstselectedKepesseg.kepessegekneve} képességet, ami {firstselectedKepesseg.serules} sebzést okozott {secondselectedKarakter.karakterneve}-nek.");
                     Console.WriteLine($"{firstselectedKarakter.karakterneve} nevű karakternek még ennyi manája van: {firstselectedKarakter.mana}");
-                    if (selectedKepesseg.serules > 10)
+                    if (firstselectedKepesseg.serules > 10)
                     {
                         firstselectedKarakter.mana += 5;
                         Console.WriteLine($"\n{firstselectedKarakter.karakterneve} visszakapott 5 manát a nagy sebzésért cserébe!");
                         Console.WriteLine($"{firstselectedKarakter.karakterneve} nevű karakternek ennyi manája lett. ---> {firstselectedKarakter.mana}");
                     }
-                    else if (selectedKepesseg.serules <= 10)
+                    else if (firstselectedKepesseg.serules <= 10)
                     {
                         firstselectedKarakter.mana += 10;
                         Console.WriteLine($"\n{firstselectedKarakter.karakterneve} visszakapott 10 manát a kis sebzésért cserébe!");
                         Console.WriteLine($"{firstselectedKarakter.karakterneve} nevű karakternek ennyi manája lett. ---> {firstselectedKarakter.mana}");
                     }
-
                     if (secondselectedKarakter.eletero <= 0)
                     {
                         Console.WriteLine($"\n{secondselectedKarakter.karakterneve} meghalt! {firstselectedKarakter.karakterneve} nyert!");
-                        kinyert += 1;
+                        kinyert = 1;
+                        Console.WriteLine(kinyert == 1 ? $"\n{firstselectedKarakter.karakterneve} nyert!" : $"\n{secondselectedKarakter.karakterneve} nyert!");
                         break;
                     }
                     Console.WriteLine($"\n{secondselectedKarakter.karakterneve} maradék életereje: {secondselectedKarakter.eletero}");
                     Console.WriteLine("\nMost a második játékos következik:");
                     int kepessegsecondIndex = Convert.ToInt32(Console.ReadLine());
                     var secondselectedKepesseg = kepessegek.Find(k => k.kepessegek_id == kepessegsecondIndex && k.karakter_id == secondselectedKarakter._karakter_id);
-                    if (selectedKepesseg == null || selectedKepesseg == secondselectedKepesseg)
+                    int secondkepessegIndex = kepessegsecondIndex;
+                    if (secondselectedKepesseg == null || secondkepessegIndex == firstkepessegIndex)
                     {
                         Console.WriteLine("Érvénytelen képesség választás!");
                         break;
                     }
-                    else if (selectedKepesseg.manafogyasztas > secondselectedKarakter.mana)
+                    else if (firstselectedKepesseg.manafogyasztas > secondselectedKarakter.mana)
                     {
                         Console.WriteLine("Nincs elég manád a képesség használatához!");
                         continue;
                     }
                     secondselectedKarakter.mana -= secondselectedKepesseg.manafogyasztas;
-                    firstselectedKarakter.eletero -= selectedKepesseg.serules;
-                    Console.WriteLine($"\n{secondselectedKarakter.karakterneve} használta a {selectedKepesseg.kepessegekneve} képességet, ami {selectedKepesseg.serules} sebzést okozott {firstselectedKarakter.karakterneve}-nek.");
+                    firstselectedKarakter.eletero -= secondselectedKepesseg.serules;
+                    Console.WriteLine($"\n{secondselectedKarakter.karakterneve} használta a {secondselectedKepesseg.kepessegekneve} képességet, ami {secondselectedKepesseg.serules} sebzést okozott {firstselectedKarakter.karakterneve}-nek.");
                     Console.WriteLine($"\n{firstselectedKarakter.karakterneve} maradék életereje: {firstselectedKarakter.eletero}");
                     Console.WriteLine($"{secondselectedKarakter.karakterneve} nevű karakternek még ennyi manája van: {secondselectedKarakter.mana}");
                     if (secondselectedKepesseg.serules > 10)
@@ -176,14 +175,13 @@ internal class Program
                         Console.WriteLine($"\n{secondselectedKarakter.karakterneve} visszakapott 10 manát a kis sebzésért cserébe!");
                         Console.WriteLine($"{secondselectedKarakter.karakterneve} nevű karakternek ennyi manája lett. ---> {secondselectedKarakter.mana}");
                     }
-
                     Console.WriteLine($"\nMost újra az első játékos következik:");
                     if (firstselectedKarakter.eletero <= 0)
                     {
                         Console.WriteLine($"\n{firstselectedKarakter.karakterneve} meghalt! {secondselectedKarakter.karakterneve} nyert!");
-                        kinyert += 2;
+                        kinyert = 2;
                         break;
-                    }
+                    } 
                 }
             }
             catch
