@@ -30,8 +30,54 @@ internal class Program
         KepessegekKiirasa(kepessegek);
 
         MeccsKeszites(jatekok, karakterek, kepessegek, ref kinyert, ref firstplayer, ref secondplayer);
+        FileKiirasa(kinyert, firstplayer, secondplayer);
 
     }
+
+    private static void FileKiirasa(int kinyert, string firstplayer, string secondplayer)
+    {
+        string filePath = "meccsek_eredmenyei.txt";
+        string jatekosok = $"{firstplayer} : {secondplayer}";
+        if (!File.Exists(filePath))
+        {
+            using (StreamWriter sw = new StreamWriter(filePath))
+            {
+                sw.WriteLine("1. játékos : 2. játékos");
+                sw.WriteLine(jatekosok);
+                sw.WriteLine($"{(kinyert == 1 ? 1 : 0)} : {(kinyert == 2 ? 1 : 0)}");
+                sw.WriteLine();
+            }
+            return;
+        }
+        var lines = File.ReadAllLines(filePath).ToList();
+        int index = lines.FindIndex(l => l.Trim() == jatekosok);
+        if (index == -1)
+        {
+            using (StreamWriter sw = new StreamWriter(filePath, append: true))
+            {
+                sw.WriteLine("1. játékos : 2. játékos");
+                sw.WriteLine(jatekosok);
+                sw.WriteLine($"{(kinyert == 1 ? 1 : 0)} : {(kinyert == 2 ? 1 : 0)}");
+                sw.WriteLine();
+            }
+        }
+        else
+        {
+            string scoreLine = lines[index + 2];
+            var parts = scoreLine.Split(':');
+
+            int p1Wins = int.Parse(parts[0].Trim());
+            int p2Wins = int.Parse(parts[1].Trim());
+
+            if (kinyert == 1) p1Wins++;
+            else p2Wins++;
+
+            lines[index + 2] = $"{p1Wins} : {p2Wins}";
+
+            File.WriteAllLines(filePath, lines);
+        }
+    }
+
 
     private static void MeccsKeszites(List<Jatekok> jatekok, List<Karakterek> karakterek, List<Kepessegek> kepessegek, ref int kinyert, ref string player1, ref string player2)
     {
@@ -129,12 +175,26 @@ internal class Program
                         firstselectedKarakter.mana += 5;
                         Console.WriteLine($"\n{firstselectedKarakter.karakterneve} visszakapott 5 manát a nagy sebzésért cserébe!");
                         Console.WriteLine($"{firstselectedKarakter.karakterneve} nevű karakternek ennyi manája lett. ---> {firstselectedKarakter.mana}");
+                        if (firstselectedKarakter.mana < 10)
+                        {
+                            firstselectedKarakter.eletero -= 10;
+                            firstselectedKarakter.mana += 40;
+                            Console.WriteLine($"\n{firstselectedKarakter.karakterneve} manája 10 alá csökkent, ezért 10 sebzést kapott és visszanyert 40 manát!");
+                            Console.WriteLine($"{firstselectedKarakter.karakterneve} új életereje: {firstselectedKarakter.eletero}, új manája: {firstselectedKarakter.mana}");
+                        }
                     }
                     else if (firstselectedKepesseg.serules <= 10)
                     {
                         firstselectedKarakter.mana += 10;
                         Console.WriteLine($"\n{firstselectedKarakter.karakterneve} visszakapott 10 manát a kis sebzésért cserébe!");
                         Console.WriteLine($"{firstselectedKarakter.karakterneve} nevű karakternek ennyi manája lett. ---> {firstselectedKarakter.mana}");
+                        if (firstselectedKarakter.mana < 10)
+                        {
+                            firstselectedKarakter.eletero -= 10;
+                            firstselectedKarakter.mana += 40;
+                            Console.WriteLine($"\n{firstselectedKarakter.karakterneve} manája 10 alá csökkent, ezért 10 sebzést kapott és visszanyert 40 manát!");
+                            Console.WriteLine($"{firstselectedKarakter.karakterneve} új életereje: {firstselectedKarakter.eletero}, új manája: {firstselectedKarakter.mana}");
+                        }
                     }
                     if (secondselectedKarakter.eletero <= 0)
                     {
@@ -168,12 +228,26 @@ internal class Program
                         secondselectedKarakter.mana += 5;
                         Console.WriteLine($"\n{secondselectedKarakter.karakterneve} visszakapott 5 manát a nagy sebzésért cserébe!");
                         Console.WriteLine($"{secondselectedKarakter.karakterneve} nevű karakternek ennyi manája lett. ---> {secondselectedKarakter.mana}");
+                        if (secondselectedKarakter.mana < 10)
+                        {
+                            secondselectedKarakter.eletero -= 10;
+                            secondselectedKarakter.mana += 40;
+                            Console.WriteLine($"\n{secondselectedKarakter.karakterneve} manája 10 alá csökkent, ezért 10 sebzést kapott és visszanyert 40 manát!");
+                            Console.WriteLine($"{secondselectedKarakter.karakterneve} új életereje: {secondselectedKarakter.eletero}, új manája: {secondselectedKarakter.mana}");
+                        }
                     }
                     else if (secondselectedKepesseg.serules <= 10)
                     {
                         secondselectedKarakter.mana += 10;
                         Console.WriteLine($"\n{secondselectedKarakter.karakterneve} visszakapott 10 manát a kis sebzésért cserébe!");
                         Console.WriteLine($"{secondselectedKarakter.karakterneve} nevű karakternek ennyi manája lett. ---> {secondselectedKarakter.mana}");
+                        if (secondselectedKarakter.mana < 10)
+                        {
+                            secondselectedKarakter.eletero -= 10;
+                            secondselectedKarakter.mana += 40;
+                            Console.WriteLine($"\n{secondselectedKarakter.karakterneve} manája 10 alá csökkent, ezért 10 sebzést kapott és visszanyert 40 manát!");
+                            Console.WriteLine($"{secondselectedKarakter.karakterneve} új életereje: {secondselectedKarakter.eletero}, új manája: {secondselectedKarakter.mana}");
+                        }
                     }
                     Console.WriteLine($"\nMost újra az első játékos következik:");
                     if (firstselectedKarakter.eletero <= 0)

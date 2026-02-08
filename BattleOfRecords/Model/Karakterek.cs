@@ -11,7 +11,13 @@ namespace BattleOfRecords.Model
         public int _karakter_id { get; set; }
         public int _jatek_id { get; set; }
         public string karakterneve { get; set; }
-        public int eletero { get; set; }
+        public int elet { get; set; }
+        public int eletero 
+        {
+            get { return elet; } 
+            set
+            { elet = value; }
+        }
         public int mana { get; set; }
 
         public Karakterek(int _karakter, int _jatek, int _mana, int _eletero, string _karakternev)
